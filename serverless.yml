@@ -1,0 +1,59 @@
+service: learn-data-transforms
+
+frameworkVersion: "<2.0.0"
+
+plugins:
+  - serverless-python-requirements
+  - serverless-deployment-bucket
+
+custom:
+  pythonRequirements:
+    dockerizePip: non-linux
+
+  stage: "${self:provider.stage}"
+  prod:
+    enabled: true
+  dev:
+    enabled: false
+
+
+provider:
+  name: aws
+  stage: ${opt:stage, 'dev'}
+  profile: ${opt:profile}
+  runtime: python3.7
+  role: arn:aws:iam::845977697457:role/AWSLambdaVPCSecretsExecutionRole
+  deploymentBucket:
+    name: verb-data-serverless-deploys-${self:provider.region}-${self:provider.stage}
+    blockPublicAccess: true
+    tags:
+        project: data-lake
+
+package:
+  exclude:
+    - .git/**
+    - .env/**
+    - node_modules/**
+
+functions:
+  learn-data-transforms:
+    handler: translate_to_english.handler
+    events:
+      - schedule:
+          rate: rate(15 minutes)
+          enabled: ${self:custom.${self:custom.stage}.enabled}
+    timeout: 900
+    memorySize: 1024
+    environment:
+      HOURS_BACK: 2
+
+  learn-data-reorganize-files:
+    handler: reorganize_files.handler
+    events:
+      - schedule:
+          rate: rate(15 minutes)
+          enabled: ${self:custom.${self:custom.stage}.enabled}
+    timeout: 900
+    memorySize: 1024
+    environment:
+      HOURS_BACK: 2
