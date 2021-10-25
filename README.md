@@ -52,3 +52,4 @@ In Dev:
 * Snowflake Terraform to build out Function and API Integration
 * AWS Terraform for building out Policy, Role, External Integration
 * GiHub Pipelines and environment variables
+* Unittests
