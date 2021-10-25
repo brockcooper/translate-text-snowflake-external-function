@@ -1,6 +1,6 @@
-service: learn-data-transforms
+service: snowflake-translate
 
-frameworkVersion: "<2.0.0"
+frameworkVersion: "2"
 
 plugins:
   - serverless-python-requirements
@@ -11,23 +11,22 @@ custom:
     dockerizePip: non-linux
 
   stage: "${self:provider.stage}"
-  prod:
-    enabled: true
-  dev:
-    enabled: false
 
 
 provider:
   name: aws
   stage: ${opt:stage, 'dev'}
-  profile: ${opt:profile}
+  region: us-west-2
   runtime: python3.7
-  role: arn:aws:iam::845977697457:role/AWSLambdaVPCSecretsExecutionRole
-  deploymentBucket:
-    name: verb-data-serverless-deploys-${self:provider.region}-${self:provider.stage}
-    blockPublicAccess: true
-    tags:
-        project: data-lake
+  iam:
+    role:
+      statements:
+        - Effect: 'Allow'
+          Action:
+            - 'translate:TranslateText'
+          Resource: "*"
+
+  # role: arn:aws:iam::845977697457:role/AWSLambdaVPCSecretsExecutionRole
 
 package:
   exclude:
@@ -36,24 +35,12 @@ package:
     - node_modules/**
 
 functions:
-  learn-data-transforms:
-    handler: translate_to_english.handler
+  snowflake-translate:
+    handler: translate_from_english.handler
     events:
-      - schedule:
-          rate: rate(15 minutes)
-          enabled: ${self:custom.${self:custom.stage}.enabled}
-    timeout: 900
+      - http:
+          path: translate/from_english
+          method: post
+          # authorizer: aws_iam
+    timeout: 30
     memorySize: 1024
-    environment:
-      HOURS_BACK: 2
-
-  learn-data-reorganize-files:
-    handler: reorganize_files.handler
-    events:
-      - schedule:
-          rate: rate(15 minutes)
-          enabled: ${self:custom.${self:custom.stage}.enabled}
-    timeout: 900
-    memorySize: 1024
-    environment:
-      HOURS_BACK: 2
