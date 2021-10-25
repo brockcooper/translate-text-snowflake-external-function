@@ -53,5 +53,11 @@ This repo has a built in CI/CD pipeline using Github Actions found in `.github/w
 
 This repo is primarily intended to deploy the API Gateway and Lambda to AWS. All other set up will need to take place in Snowflake. You will want to follow the [Snowflake documentation](https://docs.snowflake.com/en/sql-reference/external-functions-creating-aws-common-api-integration.html) describing the API Integration and the AWS IAM policy and role that is needed.
 
-### TODO:
-* Unittests
+### Explanation of Files
+* `.github/workflows/deploy.yml`: Uses Github Actions for the CI/CD pipeline
+* `requirements.txt`: Lists the required packages needed to run the code locally and deploy to Lambda. You can run `pip install -r requirements.txt` on your local environment to download the required packages for your local development use
+* `serverless.yml`: Uses the serverless framework to deploy API Gateway and Lambda to AWS. See `.github/workflows/deploy.yml` for the code that runs to deploy with serverless.
+* `tests.py`: Unittests that must pass before the code gets deployed
+* `translate_from_english.py`: This is the actual Python code that will run on the Lambda function
+
+
