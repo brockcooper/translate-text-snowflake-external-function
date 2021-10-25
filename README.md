@@ -63,6 +63,21 @@ main < dev < feature_branch_3
 
 This repo is primarily intended to deploy the API Gateway and Lambda to AWS. All other set up will need to take place in Snowflake. You will want to follow the [Snowflake documentation](https://docs.snowflake.com/en/sql-reference/external-functions-creating-aws-common-api-integration.html) describing the API Integration and the AWS IAM policy and role that is needed.
 
+4. Create the Snowflake External Function in Snowflake
+
+Here is an example of creating and calling the external function in Snowflake:
+
+```SQL
+create or replace external function translate_from_english(english_text varchar, languages variant)
+    returns variant
+    api_integration = <your_api_integration_name>
+    as 'https://abc123ef5.execute-api.us-west-2.amazonaws.com/prod/translate/from_english';
+
+select translate_from_english('This is an example english text', array_construct('es','fr', 'ja'));
+
+```
+
+
 ### Explanation of Files
 * `.github/workflows/deploy.yml`: Uses Github Actions for the CI/CD pipeline
 * `requirements.txt`: Lists the required packages needed to run the code locally and deploy to Lambda. You can run `pip install -r requirements.txt` on your local environment to download the required packages for your local development use
