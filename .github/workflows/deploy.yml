@@ -40,7 +40,7 @@ jobs:
         npm install serverless-deployment-bucket --save-dev
         npm install --save serverless-python-requirements
         npx serverless deploy --stage dev
-      if: github.ref == 'refs/heads/dev' && github.event.pull_request.merged == 'true'
+      if: github.ref == 'refs/heads/dev'
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -50,7 +50,7 @@ jobs:
         npm install serverless-deployment-bucket --save-dev
         npm install --save serverless-python-requirements
         npx serverless deploy --stage prod
-      if: github.ref == 'refs/heads/main' && github.event.pull_request.merged == 'true'
+      if: github.ref == 'refs/heads/main'
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
