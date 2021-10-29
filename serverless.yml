@@ -26,8 +26,6 @@ provider:
             - 'translate:TranslateText'
           Resource: "*"
 
-  # role: arn:aws:iam::845977697457:role/AWSLambdaVPCSecretsExecutionRole
-
 package:
   exclude:
     - .git/**
@@ -41,6 +39,6 @@ functions:
       - http:
           path: translate/from_english
           method: post
-          # authorizer: aws_iam
+          authorizer: aws_iam
     timeout: 30
     memorySize: 1024
