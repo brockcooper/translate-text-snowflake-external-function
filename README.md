@@ -77,7 +77,6 @@ select translate_from_english('This is an example english text', array_construct
 
 ```
 
-
 ### Explanation of Files
 * `.github/workflows/deploy.yml`: Uses Github Actions for the CI/CD pipeline
 * `requirements.txt`: Lists the required packages needed to run the code locally and deploy to Lambda. You can run `pip install -r requirements.txt` on your local environment to download the required packages for your local development use
