@@ -31,7 +31,7 @@ provider:
     resourcePolicy:
       - Effect: Allow
         Principal:
-            AWS: "arn:aws:sts::${aws:accountId}:assumed-role/SnowflakeExternalFunctionsRole/snowflake"
+            AWS: "arn:aws:sts::${aws:accountId}:assumed-role/${env:SNOWFLAKE_IAM_ROLE, 'SnowflakeExternalFunctionsRole'}/snowflake"
         Action: execute-api:Invoke
         Resource:
           - arn:aws:execute-api:${aws:region}:${aws:accountId}:*
