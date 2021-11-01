@@ -1,6 +1,7 @@
 service: snowflake-translate
 
 frameworkVersion: "2"
+variablesResolutionMode: 20210326
 
 plugins:
   - serverless-python-requirements
@@ -17,7 +18,8 @@ provider:
   name: aws
   stage: ${opt:stage, 'dev'}
   region: us-west-2
-  runtime: python3.7
+  runtime: python3.8
+  lambdaHashingVersion: 20201221
   iam:
     role:
       statements:
@@ -25,6 +27,14 @@ provider:
           Action:
             - 'translate:TranslateText'
           Resource: "*"
+  apiGateway:
+    resourcePolicy:
+      - Effect: Allow
+        Principal:
+            AWS: "arn:aws:sts::${aws:accountId}:assumed-role/SnowflakeExternalFunctionsRole/snowflake"
+        Action: execute-api:Invoke
+        Resource:
+          - arn:aws:execute-api:${aws:region}:${aws:accountId}:*
 
 package:
   exclude:
