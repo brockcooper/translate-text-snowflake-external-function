@@ -43,7 +43,12 @@ You can find a list of supported languages and language codes in [Amazon's docum
 
 1. Set up Github Repo Settings
 
-In your Github repo, go to settings, Secrets, and add 3 secrets with their respective credentials: `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_DEFAULT_REGION`. You will want to use a user that has the appropriate role to deploy a Lambda function and API Gateway using a CloudFormation template.
+In your Github repo, go to settings, Secrets, and add 4 secrets with their respective credentials. You will want to use a user that has the appropriate role to deploy a Lambda function and API Gateway using a CloudFormation template.:
+
+* `AWS_ACCESS_KEY_ID`
+* `AWS_SECRET_ACCESS_KEY`
+* `AWS_DEFAULT_REGION`
+* `SNOWFLAKE_IAM_ROLE`: This should be the IAM role that you are allowing Snowflake to use. If you don't provide this then we default to using `SnowflakeExternalFunctionsRole` as the role name
 
 2. Push API Gateway and Lambda function to AWS
 
