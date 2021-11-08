@@ -22,7 +22,6 @@ def handler(event, context, local=False):
                     TargetLanguageCode=language)["TranslatedText"]
                 text_list.append({"language": language,
                                   "translated_text": translated_text,
-                                  "original_text": row[1],
                                   "status": 'success'})
             except Exception as e:
                 print(e)
